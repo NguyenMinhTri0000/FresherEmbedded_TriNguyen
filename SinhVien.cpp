@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <vector>
+#include <stdlib.h>
+#include <string.h>
 
 using namespace std;
 
@@ -27,6 +29,7 @@ SinhVien::SinhVien(){
 
 class Menu{
     public:
+        Menu();
         vector<SinhVien> Database;
         void ThemSinhVien();
         void CapNhatThongTin();
@@ -36,15 +39,83 @@ class Menu{
         void NhapDiem_TinhGPA();        
 };
 
+Menu::Menu(){
+
+    int phim;
+    menu:
+    printf("Nhap chuong trinh ban muon\n");
+    printf("Nhan 1: Them Sinh Vien\n");
+    printf("Nhan 2: Chinh Sua Thong Tin Sinh Vien\n");
+    printf("Nhan 3: Xoa Sinh Vien\n");        
+    printf("Nhan 5: Hien Thi Danh Sach\n");
+    printf("Nhan 6: De thoat chuong trinh\n");
+
+    scanf("%d", &phim);
+
+    switch (phim)
+    {
+    case 1:
+        ThemSinhVien();
+        printf("Nhan 1 Quay lai Menu: ");
+        scanf("%d", &phim);
+        goto menu;
+        break;
+    case 2:
+        CapNhatThongTin();
+        printf("Nhan 1 Quay lai Menu: ");
+        scanf("%d", &phim);
+        goto menu;
+        break;   
+    case 3:
+        XoaSinhVien();
+        printf("Nhan 1 Quay lai Menu: ");
+        scanf("%d", &phim);
+        goto menu;
+        break;             
+    case 5:
+        HienThiDanhSach();
+    default:
+        break;
+    }
+}
+
 void Menu::ThemSinhVien(){
-    SinhVien sv;// 0x08
+    SinhVien sv;
     printf("THEM SINH VIEN\n");
     printf("Nhap Ten: ");
     scanf("%s", sv.TEN);
     printf("Gioi Tinh(Nam/Nu): ");
     scanf("%s", sv.GIOI_TINH);
     // printf("Tuoi: ");
-    // scanf("%d", sv.TUOI);    
+    // scanf("%hhd", sv.TUOI);    
+
+    //-----------------------
+
+    printf("Nhap Diem Toan: ");
+    scanf("%lf", &sv.DIEM_TOAN);
+    printf("Nhap Diem Ly: ");
+    scanf("%lf", &sv.DIEM_LY);
+    printf("Nhap Diem Hoa: ");
+    scanf("%lf", &sv.DIEM_HOA);
+
+//------------------------
+    //Tinh Diem Trung Binh
+
+    sv.DIEM_TRUNG_BINH = (sv.DIEM_TOAN + sv.DIEM_HOA + sv.DIEM_LY)/3;
+
+
+    //Tinh Hoc Luc
+
+    if (sv.DIEM_TRUNG_BINH >= 8)
+    {
+        strcpy(sv.HOC_LUC, "GIOI");
+    }else if(sv.DIEM_TRUNG_BINH >= 6.5){
+        strcpy(sv.HOC_LUC, "KHA");
+    }else if(sv.DIEM_TRUNG_BINH >= 5){
+        strcpy(sv.HOC_LUC, "TRUNG BINH");
+    }else{
+        strcpy(sv.HOC_LUC, "YEU");
+    }
 
     Database.push_back(sv);
 }
@@ -66,9 +137,34 @@ void Menu::CapNhatThongTin()
             scanf("%s", sv.TEN);
             printf("Gioi Tinh(Nam/Nu): ");
             scanf("%s", sv.GIOI_TINH);
-            printf("Tuoi: ");
-            // scanf("%d", sv.TUOI);              
-            // Database[i] = sv;
+            // printf("Tuoi: ");
+            // scanf("%hhd", sv.TUOI);  
+
+            printf("Nhap Diem Toan: ");
+            scanf("%lf", &sv.DIEM_TOAN);
+            printf("Nhap Diem Ly: ");
+            scanf("%lf", &sv.DIEM_LY);
+            printf("Nhap Diem Hoa: ");
+            scanf("%lf", &sv.DIEM_HOA);
+
+        //------------------------
+            //Tinh Diem Trung Binh
+            sv.DIEM_TRUNG_BINH = (sv.DIEM_TOAN + sv.DIEM_HOA + sv.DIEM_LY)/3;
+
+
+            //Tinh Hoc Luc
+            if (sv.DIEM_TRUNG_BINH >= 8)
+            {
+                strcpy(sv.HOC_LUC, "GIOI");
+            }else if(sv.DIEM_TRUNG_BINH >= 6.5){
+                strcpy(sv.HOC_LUC, "KHA");
+            }else if(sv.DIEM_TRUNG_BINH >= 5){
+                strcpy(sv.HOC_LUC, "TRUNG BINH");
+            }else{
+                strcpy(sv.HOC_LUC, "YEU");
+            }
+            
+            Database[i] = sv;
             found = true;
             break;
         }
@@ -104,64 +200,21 @@ void Menu::XoaSinhVien()
         printf("Khong tim thay sinh vien co ID la %d\n", id);
     }
 }
-void Menu::NhapDiem_TinhGPA()
-{
-    uint8_t id;
-    printf("CAP NHAT DIEM SO\n");
-    printf("Nhap vao ID: ");
-    scanf("%hhd", &id);
 
-    bool found = false;
-    for (uint8_t i = 0; i < Database.size(); i++)
-    {
-        if (Database[i].ID == id)
-        {
-            SinhVien sv = Database[i];
-            printf("Diem Toan: ");
-            scanf("%s", &sv.DIEM_TOAN);
-            printf("Diem Ly: ");
-            scanf("%s", &sv.DIEM_LY);
-            printf("Diem Hoa: ");       //sao nó chạy tới điểm hóa thì bị lỗi
-            scanf("%s", &sv.DIEM_HOA);   
-
-            sv.DIEM_TRUNG_BINH = (sv.DIEM_HOA + sv.DIEM_HOA + sv.DIEM_LY)/3;
-            // if(sv.DIEM_TRUNG_BINH >= 8)     {
-            //     sv.HOC_LUC = "Gioi";
-            // }
-            // else if(sv.DIEM_TRUNG_BINH >= 6.5)
-            // {
-            //     sv.HOC_LUC = "Kha";
-            // }
-            // else if(sv.DIEM_TRUNG_BINH >= 5)
-            // {
-            //     sv.HOC_LUC = "Trung Binh"; 
-            // }
-            // else                 sv.HOC_LUC = "Yeu"; 
-
-
-            Database[i] = sv;
-            found = true;
-            break;
-        }
-    }
-
-    if (!found)
-    {
-        printf("Khong tim thay sinh vien co ID la %d\n", id);
-    }
-}
 void Menu::HienThiDanhSach(){
+    // system("clear");
+    printf("HIEN THI THONG TIN SINH VIEN\n"); 
    for (uint8_t i = 0; i < Database.size(); i++)
    {
-        printf("HIEN THI\n");       
+        printf("Sinh Vien %d:\n", i+1);
         printf("Ten Sinh Vien: %s\n", Database[i].TEN);
+        // printf("Tuoi Sinh Vien: %hhd\n", Database[i].TUOI);        
         printf("Gioi Tinh: %s\n", Database[i].GIOI_TINH);
-        // printf("Tuoi: %d\n", Database[i].TUOI);    
 
         printf("Diem Toan: %f\n", Database[i].DIEM_TOAN);
         printf("Diem Ly: %f\n", Database[i].DIEM_LY);
         printf("Diem Hoa: %f\n", Database[i].DIEM_HOA);    
-        printf("Diem Trung Binh: %s\n", Database[i].DIEM_TRUNG_BINH);    
+        printf("Diem Trung Binh: %f\n", Database[i].DIEM_TRUNG_BINH);    
         printf("Hoc Luc: %s\n", Database[i].HOC_LUC);                             
    }
    
@@ -171,16 +224,6 @@ void Menu::HienThiDanhSach(){
 
 int main(int argc, char const *argv[])
 {
-   Menu mn;
-
-   mn.ThemSinhVien();
-   mn.ThemSinhVien();
-   mn.CapNhatThongTin();
-
-   mn.XoaSinhVien();
-//    mn.NhapDiem_TinhGPA();
-   mn.HienThiDanhSach();
-
-
+    Menu mn;
     return 0;
 }
