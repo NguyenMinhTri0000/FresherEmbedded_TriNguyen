@@ -36,7 +36,11 @@ class Menu{
         void XoaSinhVien();
         void TimKiemSinhVien();
         void HienThiDanhSach();
-        void NhapDiem_TinhGPA();        
+        void TimTheoTen();
+        void SapXepTheoTen();
+        void SapXepTheoGPA(); 
+        void XuatFile();       
+
 };
 
 Menu::Menu(){
@@ -47,8 +51,12 @@ Menu::Menu(){
     printf("Nhan 1: Them Sinh Vien\n");
     printf("Nhan 2: Chinh Sua Thong Tin Sinh Vien\n");
     printf("Nhan 3: Xoa Sinh Vien\n");        
-    printf("Nhan 5: Hien Thi Danh Sach\n");
-    printf("Nhan 6: De thoat chuong trinh\n");
+    printf("Nhan 4: Tim Kiem Sinh Vien Theo Ten\n"); 
+    printf("Nhan 5: Sap Xep Sinh Vien Theo GPA\n"); 
+    printf("Nhan 6: Sap Xep Sinh Vien Theo Ten\n");       
+    printf("Nhan 7: Hien Thi Danh Sach\n");
+    printf("Nhan 8: Ghi Danh Sach Sinh Vien Vao File\n");    
+    printf("Nhan 9: De thoat chuong trinh\n");
 
     scanf("%d", &phim);
 
@@ -71,9 +79,37 @@ Menu::Menu(){
         printf("Nhan 1 Quay lai Menu: ");
         scanf("%d", &phim);
         goto menu;
-        break;             
+        break;  
+    case 4:
+        TimTheoTen();
+        printf("Nhan 1 Quay lai Menu: ");
+        scanf("%d", &phim);
+        goto menu;
+        break;       
     case 5:
+        SapXepTheoGPA();
+        printf("Nhan 1 Quay lai Menu: ");
+        scanf("%d", &phim);
+        goto menu;
+        break;   
+    case 6:
+        SapXepTheoTen();
+        printf("Nhan 1 Quay lai Menu: ");
+        scanf("%d", &phim);
+        goto menu;
+        break;                           
+    case 7:
         HienThiDanhSach();
+        printf("Nhan 1 Quay lai Menu: ");
+        scanf("%d", &phim);
+        goto menu;
+        break;           
+    case 8:
+        XuatFile();
+        printf("Nhan 1 Quay lai Menu: ");
+        scanf("%d", &phim);
+        goto menu;
+        break;            
     default:
         break;
     }
@@ -100,12 +136,10 @@ void Menu::ThemSinhVien(){
 
 //------------------------
     //Tinh Diem Trung Binh
-
     sv.DIEM_TRUNG_BINH = (sv.DIEM_TOAN + sv.DIEM_HOA + sv.DIEM_LY)/3;
 
 
     //Tinh Hoc Luc
-
     if (sv.DIEM_TRUNG_BINH >= 8)
     {
         strcpy(sv.HOC_LUC, "GIOI");
@@ -201,6 +235,47 @@ void Menu::XoaSinhVien()
     }
 }
 
+void Menu::TimTheoTen(){
+    char name[20];
+    printf("TIM VA HIEN THI THEO TEN SINH VIEN\n");
+    printf("Nhap Vao Ten Sinh Vien: ");
+    scanf("%s", &name);
+
+    bool found = false;
+    for (uint8_t i = 0; i < Database.size(); i++)
+    {
+        if (strcmp(Database[i].TEN,name)==0)
+        {
+
+            printf("Sinh Vien %d:\n", i+1);
+            printf("Ten Sinh Vien: %s\n", Database[i].TEN);
+            // printf("Tuoi Sinh Vien: %hhd\n", Database[i].TUOI);        
+            printf("Gioi Tinh: %s\n", Database[i].GIOI_TINH);
+
+            printf("Diem Toan: %f\n", Database[i].DIEM_TOAN);
+            printf("Diem Ly: %f\n", Database[i].DIEM_LY);
+            printf("Diem Hoa: %f\n", Database[i].DIEM_HOA);    
+            printf("Diem Trung Binh: %f\n", Database[i].DIEM_TRUNG_BINH);    
+            printf("Hoc Luc: %s\n", Database[i].HOC_LUC);  
+
+            found = true;
+            break;
+        }
+    }
+
+    if (!found)
+    {
+        printf("Khong tim thay sinh vien co ten la %d\n", name);
+    }    
+}
+
+void Menu::SapXepTheoGPA(){
+    printf("Chua lam\n");
+}
+
+void Menu::SapXepTheoTen(){
+    printf("Chua lam\n");
+}
 void Menu::HienThiDanhSach(){
     // system("clear");
     printf("HIEN THI THONG TIN SINH VIEN\n"); 
@@ -219,7 +294,9 @@ void Menu::HienThiDanhSach(){
    }
    
 }
-
+void Menu::XuatFile(){
+    printf("Chua lam\n");
+}
 
 
 int main(int argc, char const *argv[])
