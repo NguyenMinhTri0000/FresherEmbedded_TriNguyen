@@ -114,7 +114,7 @@ Menu::Menu(){
         break;            
     default:
         char ch;
-        printf("Nhan 1 de xac nhan thoat chuong trinh: ");
+        printf("Nhan 1 de xac nhan thoat chuong trinh: \n");
         while (1) {
             ch = getch();
             if (ch == '1') {
@@ -281,8 +281,7 @@ void Menu::TimTheoTen(){
 }
 
 void Menu::SapXepTheoGPA(){
-    printf("SAP XEP SINH VIEN THEO TEN\n");
-    uint8_t temp;
+    printf("SAP XEP SINH VIEN THEO GPA TU THAP DEN CAO\n");
     for (uint8_t i = 0; i < Database.size() - 1; i++) {       
         for (uint8_t j = 0; j < Database.size() - i - 1; j++) {
             if (Database[j].DIEM_TRUNG_BINH > Database[j + 1].DIEM_TRUNG_BINH) {
@@ -294,23 +293,21 @@ void Menu::SapXepTheoGPA(){
         }
     }    
 }
-// void Menu::SapXepTheoGPA() {
-//     printf("SAP XEP SINH VIEN THEO GPA TU CAO DEN THAP\n");
 
-//     for (uint8_t i = 0; i < Database.size() - 1; i++) {
-//         uint8_t max_idx = i;
-//         for (uint8_t j = i + 1; j < Database.size(); j++) {
-//             if (Database[j].DIEM_TRUNG_BINH > Database[max_idx].DIEM_TRUNG_BINH) {
-//                 max_idx = j;
-//             }
-//         }
-//         if (max_idx != i) {
-//             swap(Database[i], Database[max_idx]);
-//         }
-//     }
-// }
 void Menu::SapXepTheoTen(){
-    printf("Chua lam\n");
+    printf("SAP XEP SINH VIEN THEO TEN\n");
+    for (uint8_t i = 0; i < Database.size() - 1; i++) {       
+        for (uint8_t j = 0; j < Database.size() - i - 1; j++) {
+            for(uint8_t k = 0; k<20; k++)
+            {
+                if (Database[j].TEN[k] > Database[j + 1].TEN[k]) 
+                {
+                    swap(Database[i], Database[j + 1]); 
+                    break;
+                }               
+            }
+        }
+    }   
 }
 void Menu::HienThiDanhSach(){
     // system("clear");
