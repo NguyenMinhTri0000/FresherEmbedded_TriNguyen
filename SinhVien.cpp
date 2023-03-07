@@ -3,6 +3,8 @@
 #include <vector>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -111,6 +113,15 @@ Menu::Menu(){
         goto menu;
         break;            
     default:
+        char ch;
+        printf("Nhan 1 de xac nhan thoat chuong trinh: ");
+        while (1) {
+            ch = getch();
+            if (ch == '1') {
+                printf("Da thoat chuong trinh\n");
+                exit(0);
+            }
+        }    
         break;
     }
 }
@@ -270,9 +281,34 @@ void Menu::TimTheoTen(){
 }
 
 void Menu::SapXepTheoGPA(){
-    printf("Chua lam\n");
+    printf("SAP XEP SINH VIEN THEO TEN\n");
+    uint8_t temp;
+    for (uint8_t i = 0; i < Database.size() - 1; i++) {       
+        for (uint8_t j = 0; j < Database.size() - i - 1; j++) {
+            if (Database[j].DIEM_TRUNG_BINH > Database[j + 1].DIEM_TRUNG_BINH) {
+                // Database[temp] = Database[j];
+                // Database[j] = Database[j + 1];
+                // Database[j + 1] = Database[temp];
+                swap(Database[i], Database[j + 1]);                
+            }
+        }
+    }    
 }
+// void Menu::SapXepTheoGPA() {
+//     printf("SAP XEP SINH VIEN THEO GPA TU CAO DEN THAP\n");
 
+//     for (uint8_t i = 0; i < Database.size() - 1; i++) {
+//         uint8_t max_idx = i;
+//         for (uint8_t j = i + 1; j < Database.size(); j++) {
+//             if (Database[j].DIEM_TRUNG_BINH > Database[max_idx].DIEM_TRUNG_BINH) {
+//                 max_idx = j;
+//             }
+//         }
+//         if (max_idx != i) {
+//             swap(Database[i], Database[max_idx]);
+//         }
+//     }
+// }
 void Menu::SapXepTheoTen(){
     printf("Chua lam\n");
 }
