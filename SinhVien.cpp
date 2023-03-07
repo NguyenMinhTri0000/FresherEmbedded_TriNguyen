@@ -138,12 +138,23 @@ void Menu::ThemSinhVien(){
 
     //-----------------------
 
-    printf("Nhap Diem Toan: ");
-    scanf("%lf", &sv.DIEM_TOAN);
-    printf("Nhap Diem Ly: ");
-    scanf("%lf", &sv.DIEM_LY);
-    printf("Nhap Diem Hoa: ");
-    scanf("%lf", &sv.DIEM_HOA);
+    do
+    { 
+        printf("Nhap Diem Toan: ");
+        scanf("%lf", &sv.DIEM_TOAN);
+    } while (sv.DIEM_TOAN>10);
+
+    do
+    { 
+        printf("Nhap Diem Ly: ");
+        scanf("%lf", &sv.DIEM_LY);
+    } while (sv.DIEM_LY>10);
+
+    do
+    { 
+        printf("Nhap Diem Hoa: ");
+        scanf("%lf", &sv.DIEM_HOA);
+    } while (sv.DIEM_HOA>10);
 
 //------------------------
     //Tinh Diem Trung Binh
@@ -185,12 +196,23 @@ void Menu::CapNhatThongTin()
             // printf("Tuoi: ");
             // scanf("%hhd", sv.TUOI);  
 
-            printf("Nhap Diem Toan: ");
-            scanf("%lf", &sv.DIEM_TOAN);
-            printf("Nhap Diem Ly: ");
-            scanf("%lf", &sv.DIEM_LY);
-            printf("Nhap Diem Hoa: ");
-            scanf("%lf", &sv.DIEM_HOA);
+            do
+            { 
+                printf("Nhap Diem Toan: ");
+                scanf("%lf", &sv.DIEM_TOAN);
+            } while (sv.DIEM_TOAN>10);
+
+            do
+            { 
+                printf("Nhap Diem Ly: ");
+                scanf("%lf", &sv.DIEM_LY);
+            } while (sv.DIEM_LY>10);
+
+            do
+            { 
+                printf("Nhap Diem Hoa: ");
+                scanf("%lf", &sv.DIEM_HOA);
+            } while (sv.DIEM_HOA>10);
 
         //------------------------
             //Tinh Diem Trung Binh
