@@ -2,11 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-typedef struct
-{
-    uint8_t size[10];   //một chữ không nhiều hơn 10 kí tự
-    uint8_t ViTri[100];
-}Typearray;
+
 
 //Tính độ dài chuõi
 uint8_t SizeChuoi(char* str)
@@ -18,11 +14,19 @@ uint8_t SizeChuoi(char* str)
 }
 
 //Chèn thêm một dấu cách ở cuối chuỗi. Mục đích tách các chữ ra dựa vào dấu cách
-void insertChar(char *str) {    
-    char ch = ' ';
-    uint8_t pos = SizeChuoi(str);  // vị trí cần chèn ký tự vào       
-    // chèn ký tự mới vào vị trí cần chèn
-    str[pos] = ch;
+char* insertChar(char *str) {
+    uint8_t len = SizeChuoi(str); // tính độ dài chuỗi ban đầu    
+    char *new_string = (char*) malloc((len + 2) * sizeof(char));   
+
+    for(uint8_t i = 0; i < len ; i++)
+    {
+        new_string[i] = str[i];
+    }     
+    new_string[len] = ' ';
+    new_string[len + 1] = '\0';
+    // printf("%d\n", SizeChuoi(str));
+    // printf("%d\n", SizeChuoi(new_string));
+    return new_string;
 }
 
 //Chương trình xác định số dấu cách có trong chuỗi
@@ -31,145 +35,66 @@ uint8_t SoDauCach(char* str)
     uint8_t j = 0;
     for (uint8_t i = 0; i < SizeChuoi(str); i++)
     {
-        if(str[i] == 32)    j++;
+        if(str[i] == 32)    j++;        //32 là dấu cách
     }
 
     // printf("So dau cach: %d", j);
     return j;
 }
 
-//Chương trình đảo chuỗi
-void Dao_Chuoi(char *str) {
-    Typearray arr;
-    arr.size[0] = 0;
-    arr.ViTri[0] = 0;
-
-    for(uint8_t i = 0; i <= SoDauCach(str); i++)    //Số dấu cách tương đương với số chữ trong chuỗi
+//Chương trình tạo ra chuỗi đảo ngược 
+char* Dao_Ca_Chuoi(char *str) {
+    uint8_t  len = SizeChuoi(str);
+    char* new_str = (char*) malloc((len + 1) * sizeof(char));  // cấp phát vùng nhớ mới
+    for(uint8_t i = 0; i < len; i++)
     {
-        for(uint8_t j = arr.ViTri[i]; j < SizeChuoi(str); j++)
-        {
-            if((str[j] == 32)) //32 <=> 0x20 : dấu cách
-            // if((str[j] == '\0')||(str[j] == 32))
-            {
-                arr.size[i] = j;
-                break;
-            }
-        }
-        arr.ViTri[i+1] = arr.size[i] + 1;   //cộng 1 là do có thêm dấu cách
+        new_str[i] = str[len - i - 1]; // sao chép ký tự theo thứ tự đảo ngược vào vùng nhớ mới
     }
-    
-    //In ra màn hình theo hướng ngược lại
-    for(int8_t i = SoDauCach(str); i >= 0; i--)
-    {
-        for(uint8_t k = 0 ; k<SizeChuoi (str); k++)        
-        {
-            if(k == arr.size[i])
-            {
-                for(uint8_t m = arr.ViTri[i]; m < arr.size[i]; m ++)
-                {
-                    printf("%c",str[m]);
-                }
-            }
-        }
-        printf(" ");    //dấu cách giữa các chữ
-    }
-    printf("\n");
-
-    //In Hoa Chữ Cái Đầu
-    for(int8_t i = SoDauCach(str); i >= 0; i--)
-    {
-        for(uint8_t k = 0 ; k<SizeChuoi (str); k++)        
-        {
-            if(k == arr.size[i])
-            {
-                // printf("%c",str[arr.ViTri[i]]);
-                for(uint8_t m = arr.ViTri[i] ; m < arr.size[i]; m ++)
-                {
-                    if((str[m]>=97)&&(str[m]<=122))     //cái chữ đó viết thường, viết hoa bỏ qua
-                    {
-                        if(m == arr.ViTri[i])   //Kí tự đầu 
-                        {
-                            printf("%c",str[m]-32);
-                        }
-                        else
-                        {
-                            printf("%c",str[m]);                            
-                        }
-                    }
-                    else  if((str[m]>=65)&&(str[m]<=90)) //Các kí tự sau mà viết hoa cho nó về thường
-                    {
-                        if(m != arr.ViTri[i])   //Khác kí tự đầu 
-                        {
-                            printf("%c",str[m]+32);
-                        }
-                        else
-                        {
-                            printf("%c",str[m]);                            
-                        }
-                    }
-                }
-            }
-        }
-        printf(" ");    //dấu cách giữa các chữ
-    }
-    printf("\n");
-
-    //IN HOA
-    for(int8_t i = SoDauCach(str); i >= 0; i--)
-    {
-        for(uint8_t k = 0 ; k<SizeChuoi (str); k++)        
-        {
-            if(k == arr.size[i])
-            {
-                // printf("%c",str[arr.ViTri[i]]);
-                for(uint8_t m = arr.ViTri[i] ; m < arr.size[i]; m ++)
-                {
-                    if((str[m]>=97)&&(str[m]<=122))     //cái chữ đó viết thường/ viết hoa bỏ qua
-                    {
-                        printf("%c",str[m]-32);
-                    }
-                    else
-                    {
-                        printf("%c",str[m]);
-                    }
-                }
-            }
-        }
-        printf(" ");    //dấu cách giữa các chữ
-    }    
-
-    printf("\n");
-    //viết thường
-    for(int8_t i = SoDauCach(str); i >= 0; i--)
-    {
-        for(uint8_t k = 0 ; k<SizeChuoi (str); k++)        
-        {
-            if(k == arr.size[i])
-            {
-                // printf("%c",str[arr.ViTri[i]]);
-                for(uint8_t m = arr.ViTri[i] ; m < arr.size[i]; m ++)
-                {
-                    if((str[m]>=65)&&(str[m]<=90))     //cái chữ đó viết hoa/ viết thường bỏ qua
-                    {
-                        printf("%c",str[m]+32);
-                    }
-                    else
-                    {
-                        printf("%c",str[m]);
-                    }
-                }
-            }
-        }
-        printf(" ");    //dấu cách giữa các chữ
-    }      
+    new_str[len] = '\0'; // thêm ký tự kết thúc chuỗi
+    return new_str;
 }
 
+char* Dao_Chuoi(char *str) {
+    uint8_t  len = SizeChuoi(str);
+    char* new_str = (char*) malloc((len + 1) * sizeof(char));
+      // cấp phát vùng nhớ mới
+    uint8_t size_word = 0;
+    uint8_t First_Add = 0;
+
+    for(uint8_t count = 0; count < SoDauCach(str); count++)
+    {
+        while (str[size_word + First_Add] != ' ')
+        {
+            size_word++;
+        }
+        //---------------------------
+        for(uint8_t i = 0; i <  size_word; i++)
+        {
+            new_str[First_Add+i] = str[First_Add + size_word - i - 1]; // sao chép ký tự theo thứ tự đảo ngược vào vùng nhớ mới
+        }
+
+        new_str[First_Add + size_word] = ' ';        
+        First_Add = First_Add + size_word + 1;  //1 là thêm dấu cách
+        size_word = 0;
+    }
+    new_str[len] = '\0'; // thêm ký tự kết thúc chuỗi
+    return new_str;
+}
+
+void HienThiChuoi(char *str)
+{
+    printf("%s\n",str);
+}
+
+
 int main() {
-    char my_string[] = "Mot hai ba Bon NAM sAu";    
-    insertChar(my_string);  //thêm vào chuỗi một dấu cách ở cuối cùng
-    Dao_Chuoi(my_string);
-    //Tại sao chuỗi my_string không đổi, đã truyền vào con trỏ rồi mà
-    // printf("%s", my_string);
+    char my_string[] = "Families of newborn patients at a Nebraska hospital received special hand-knitted hats this weekend. February 14, 2023";    
+    char* new_str = Dao_Ca_Chuoi(my_string);  //thêm vào chuỗi một dấu cách ở cuối cùng
+    char* chuoidao =    insertChar(new_str);    
+    char* chuoidao1 =    Dao_Chuoi(chuoidao); 
+    HienThiChuoi(chuoidao1);
+
+
     return 0;
 }
 
