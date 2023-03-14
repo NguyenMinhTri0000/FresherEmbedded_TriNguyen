@@ -1,13 +1,24 @@
+//Them check gioi tính
+//Sửa hiển thị cho đẹp
+//Xóa màn hình
 #include <stdio.h>
 #include <stdint.h>
 #include <vector>
 #include <stdlib.h>
 #include <string.h>
-#include <conio.h>
-#include <algorithm>
+
 
 using namespace std;
 
+#define NHAP_DIEM(mon_hoc, diem)            \
+    do                                      \
+    {                                       \
+        printf("Nhap Diem %s: ", mon_hoc);  \
+        scanf("%lf", &sv.diem);             \
+    } while (Check(sv.diem, mon_hoc) != 1);   
+
+             
+ 
 class SinhVien{
     public:
         SinhVien();
@@ -22,6 +33,7 @@ class SinhVien{
         char HOC_LUC[11];
 };
 
+//Để ID tự động tăng
 SinhVien::SinhVien(){
     static uint8_t id = 100; //0x01 = 100
     SinhVien::ID = id;
@@ -30,6 +42,10 @@ SinhVien::SinhVien(){
 
 
 class Menu{
+    private:
+        uint8_t Check(double diem, char* ten);
+        // uint8_t Check_Gioi_Tinh(char* gioi_tinh);
+        void NHAP_GIOI_TINH(char* gioi_tinh) ;
     public:
         Menu();
         vector<SinhVien> Database;
@@ -56,37 +72,48 @@ Menu::Menu(){
     printf("Nhan 4: Tim Kiem Sinh Vien Theo Ten\n"); 
     printf("Nhan 5: Sap Xep Sinh Vien Theo GPA\n"); 
     printf("Nhan 6: Sap Xep Sinh Vien Theo Ten\n");       
-    printf("Nhan 7: Hien Thi Danh Sach\n");
-    printf("Nhan 8: Ghi Danh Sach Sinh Vien Vao File\n");    
-    printf("Nhan 9: De thoat chuong trinh\n");
+    printf("Nhan 7: Hien Thi Danh Sach\n");   
+    printf("Nhan 8: De thoat chuong trinh\n");  //thực tế khác từ 1 đến 8 là được
 
     scanf("%d", &phim);
 
     switch (phim)
     {
     case 1:
+        ThemSinhVien:
         ThemSinhVien();
-        printf("Nhan 1 Quay lai Menu: ");
+        printf("Nhan 1 Quay lai Menu: \n");
+        printf("Nhan 2 Tiep tuc them sinh vien: \n");        
         scanf("%d", &phim);
-        goto menu;
+        if (phim == 1)       goto menu;
+        else if (phim == 2)  goto ThemSinhVien;
         break;
     case 2:
+        CapNhatThongTin:
         CapNhatThongTin();
-        printf("Nhan 1 Quay lai Menu: ");
+        printf("Nhan 1 Quay lai Menu: \n");
+        printf("Nhan 2 Tiep tuc sửa thông tin sinh vien: \n");        
         scanf("%d", &phim);
-        goto menu;
+        if (phim == 1)       goto menu;
+        else if (phim == 2)  goto CapNhatThongTin;
         break;   
     case 3:
+        XoaSinhVien:
         XoaSinhVien();
-        printf("Nhan 1 Quay lai Menu: ");
+        printf("Nhan 1 Quay lai Menu: \n");
+        printf("Nhan 2 Tiep tuc xoa sinh vien: \n");        
         scanf("%d", &phim);
-        goto menu;
+        if (phim == 1)       goto menu;
+        else if (phim == 2)  goto XoaSinhVien;
         break;  
     case 4:
-        TimTheoTen();
-        printf("Nhan 1 Quay lai Menu: ");
+        TimTheoTen:
+        TimTheoTen();   
+        printf("Nhan 1 Quay lai Menu: \n");
+        printf("Nhan 2 Tiep tuc tim sinh vien theo ten: \n");        
         scanf("%d", &phim);
-        goto menu;
+        if (phim == 1)       goto menu;
+        else if (phim == 2)  goto TimTheoTen;
         break;       
     case 5:
         SapXepTheoGPA();
@@ -102,64 +129,54 @@ Menu::Menu(){
         break;                           
     case 7:
         HienThiDanhSach();
-        printf("Nhan 1 Quay lai Menu: ");
-        scanf("%d", &phim);
-        goto menu;
         break;           
-    case 8:
-        XuatFile();
-        printf("Nhan 1 Quay lai Menu: ");
-        scanf("%d", &phim);
-        goto menu;
-        break;            
-    default:
-        char ch;
-        printf("Nhan 1 de xac nhan thoat chuong trinh: \n");
-        while (1) {
-            ch = getch();
-            if (ch == '1') {
-                printf("Da thoat chuong trinh\n");
-                exit(0);
-            }
-        }    
-        break;
+           
+    default:  
+    break;   
     }
 }
+uint8_t Menu::Check(double diem, char* ten)
+{
+    if(diem <= 10)   return 1;
+    else{
+        printf("Diem %f khong hop le: ", ten);
+        return 0;
+    }
+}
+// uint8_t Menu::Check_Gioi_Tinh(char* gioi_tinh)
+// {
+//     if((strcmp("gioi_tinh", "Nam") == 0)||(strcmp("gioi_tinh", "Nu") == 0))   return 1;
+//     else{
+//         printf("Gioi tinh %s khong hop le: ", gioi_tinh);
+//         return 0;
+//     }
+// }
+
+// void Menu::NHAP_GIOI_TINH(char* gioi_tinh)  
+// {
+//     do                                              
+//     {                                               
+//         printf("Nhap Gioi Tinh %s: ", gioi_tinh);   
+//         scanf("%lf", &gioi_tinh);                
+//     } while (Check_Gioi_Tinh(gioi_tinh) != 1);  
+// }    
 
 void Menu::ThemSinhVien(){
     SinhVien sv;
     printf("THEM SINH VIEN\n");
     printf("Nhap Ten: ");
     scanf("%s", sv.TEN);
+    // NHAP_GIOI_TINH(sv.GIOI_TINH);
     printf("Gioi Tinh(Nam/Nu): ");
     scanf("%s", sv.GIOI_TINH);
-    // printf("Tuoi: ");
-    // scanf("%hhd", sv.TUOI);    
 
-    //-----------------------
-
-    do
-    { 
-        printf("Nhap Diem Toan: ");
-        scanf("%lf", &sv.DIEM_TOAN);
-    } while (sv.DIEM_TOAN>10);
-
-    do
-    { 
-        printf("Nhap Diem Ly: ");
-        scanf("%lf", &sv.DIEM_LY);
-    } while (sv.DIEM_LY>10);
-
-    do
-    { 
-        printf("Nhap Diem Hoa: ");
-        scanf("%lf", &sv.DIEM_HOA);
-    } while (sv.DIEM_HOA>10);
+    NHAP_DIEM("Toan", DIEM_TOAN)  ;
+    NHAP_DIEM("Ly", DIEM_LY)  ;  
+    NHAP_DIEM("Hoa", DIEM_HOA)  ;      
 
 //------------------------
     //Tinh Diem Trung Binh
     sv.DIEM_TRUNG_BINH = (sv.DIEM_TOAN + sv.DIEM_HOA + sv.DIEM_LY)/3;
-
 
     //Tinh Hoc Luc
     if (sv.DIEM_TRUNG_BINH >= 8)
@@ -196,23 +213,9 @@ void Menu::CapNhatThongTin()
             // printf("Tuoi: ");
             // scanf("%hhd", sv.TUOI);  
 
-            do
-            { 
-                printf("Nhap Diem Toan: ");
-                scanf("%lf", &sv.DIEM_TOAN);
-            } while (sv.DIEM_TOAN>10);
-
-            do
-            { 
-                printf("Nhap Diem Ly: ");
-                scanf("%lf", &sv.DIEM_LY);
-            } while (sv.DIEM_LY>10);
-
-            do
-            { 
-                printf("Nhap Diem Hoa: ");
-                scanf("%lf", &sv.DIEM_HOA);
-            } while (sv.DIEM_HOA>10);
+            NHAP_DIEM("Toan", DIEM_TOAN)  ;
+            NHAP_DIEM("Ly", DIEM_LY)  ;  
+            NHAP_DIEM("Hoa", DIEM_HOA)  ;  
 
         //------------------------
             //Tinh Diem Trung Binh
@@ -268,6 +271,7 @@ void Menu::XoaSinhVien()
     }
 }
 
+//Tìm sinh viên theo tên và hiển thị thông tin của sinh viên đó
 void Menu::TimTheoTen(){
     char name[20];
     printf("TIM VA HIEN THI THEO TEN SINH VIEN\n");
@@ -304,32 +308,39 @@ void Menu::TimTheoTen(){
 
 void Menu::SapXepTheoGPA(){
     printf("SAP XEP SINH VIEN THEO GPA TU THAP DEN CAO\n");
+    SinhVien temp;
     for (uint8_t i = 0; i < Database.size() - 1; i++) {       
-        for (uint8_t j = 0; j < Database.size() - i - 1; j++) {
-            if (Database[j].DIEM_TRUNG_BINH > Database[j + 1].DIEM_TRUNG_BINH) {
-                // Database[temp] = Database[j];
-                // Database[j] = Database[j + 1];
-                // Database[j + 1] = Database[temp];
-                swap(Database[i], Database[j + 1]);                
+        for (uint8_t j = i + 1; j < Database.size(); j++) {
+            if (Database[i].DIEM_TRUNG_BINH > Database[j].DIEM_TRUNG_BINH) {
+                temp = Database[i];
+                Database[i] = Database[j];
+                Database[j] = temp;
+                // swap(Database[i], Database[j + 1]);                
             }
         }
-    }    
+    } 
+    HienThiDanhSach()   ;
 }
 
 void Menu::SapXepTheoTen(){
     printf("SAP XEP SINH VIEN THEO TEN\n");
+    SinhVien temp;
     for (uint8_t i = 0; i < Database.size() - 1; i++) {       
-        for (uint8_t j = 0; j < Database.size() - i - 1; j++) {
+        for (uint8_t j = i + 1; j < Database.size(); j++) {
             for(uint8_t k = 0; k<20; k++)
             {
-                if (Database[j].TEN[k] > Database[j + 1].TEN[k]) 
+                if (Database[i].TEN[k] > Database[j].TEN[k]) 
                 {
-                    swap(Database[i], Database[j + 1]); 
+                    temp = Database[i];
+                    Database[i] = Database[j];
+                    Database[j] = temp;
+                    // swap(Database[i], Database[j + 1]); 
                     break;
                 }               
             }
         }
-    }   
+    }  
+    HienThiDanhSach()   ;     
 }
 void Menu::HienThiDanhSach(){
     // system("clear");
