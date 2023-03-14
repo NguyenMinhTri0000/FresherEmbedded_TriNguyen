@@ -129,6 +129,7 @@ Menu::Menu(){
         break;                           
     case 7:
         HienThiDanhSach();
+        goto menu;        
         break;           
            
     default:  
@@ -284,17 +285,8 @@ void Menu::TimTheoTen(){
         if (strcmp(Database[i].TEN,name)==0)
         {
 
-            printf("Sinh Vien %d:\n", i+1);
-            printf("Ten Sinh Vien: %s\n", Database[i].TEN);
-            // printf("Tuoi Sinh Vien: %hhd\n", Database[i].TUOI);        
-            printf("Gioi Tinh: %s\n", Database[i].GIOI_TINH);
-
-            printf("Diem Toan: %f\n", Database[i].DIEM_TOAN);
-            printf("Diem Ly: %f\n", Database[i].DIEM_LY);
-            printf("Diem Hoa: %f\n", Database[i].DIEM_HOA);    
-            printf("Diem Trung Binh: %f\n", Database[i].DIEM_TRUNG_BINH);    
-            printf("Hoc Luc: %s\n", Database[i].HOC_LUC);  
-
+            printf("STT\tID\tTen\tGioi Tinh\t\tDiem Toan\tDiem Ly\t\tDiem Hoa\tDiem TB\t\tHoc luc\n");   
+            printf("%d\t%d\t%s\t%-25s%.1f\t\t%.1f\t\t%.1f\t\t%.1f\t\t%s\n", i + 1, Database[i].ID, Database[i].TEN, Database[i].GIOI_TINH, Database[i].DIEM_TOAN, Database[i].DIEM_LY, Database[i].DIEM_HOA, Database[i].DIEM_TRUNG_BINH, Database[i].HOC_LUC);     
             found = true;
             break;
         }
@@ -345,18 +337,20 @@ void Menu::SapXepTheoTen(){
 void Menu::HienThiDanhSach(){
     // system("clear");
     printf("HIEN THI THONG TIN SINH VIEN\n"); 
+    printf("STT\tID\tTen\tGioi Tinh\t\tDiem Toan\tDiem Ly\t\tDiem Hoa\tDiem TB\t\tHoc luc\n");    
    for (uint8_t i = 0; i < Database.size(); i++)
    {
-        printf("Sinh Vien %d:\n", i+1);
-        printf("Ten Sinh Vien: %s\n", Database[i].TEN);
-        // printf("Tuoi Sinh Vien: %hhd\n", Database[i].TUOI);        
-        printf("Gioi Tinh: %s\n", Database[i].GIOI_TINH);
+    printf("%d\t%d\t%s\t%-25s%.1f\t\t%.1f\t\t%.1f\t\t%.1f\t\t%s\n", i + 1, Database[i].ID, Database[i].TEN, Database[i].GIOI_TINH, Database[i].DIEM_TOAN, Database[i].DIEM_LY, Database[i].DIEM_HOA, Database[i].DIEM_TRUNG_BINH, Database[i].HOC_LUC);     
+        // printf("Sinh Vien %d:\n", i+1);
+        // printf("Ten Sinh Vien: %s\n", Database[i].TEN);
+        // // printf("Tuoi Sinh Vien: %hhd\n", Database[i].TUOI);        
+        // printf("Gioi Tinh: %s\n", Database[i].GIOI_TINH);
 
-        printf("Diem Toan: %f\n", Database[i].DIEM_TOAN);
-        printf("Diem Ly: %f\n", Database[i].DIEM_LY);
-        printf("Diem Hoa: %f\n", Database[i].DIEM_HOA);    
-        printf("Diem Trung Binh: %f\n", Database[i].DIEM_TRUNG_BINH);    
-        printf("Hoc Luc: %s\n", Database[i].HOC_LUC);                             
+        // printf("Diem Toan: %f\n", Database[i].DIEM_TOAN);
+        // printf("Diem Ly: %f\n", Database[i].DIEM_LY);
+        // printf("Diem Hoa: %f\n", Database[i].DIEM_HOA);    
+        // printf("Diem Trung Binh: %f\n", Database[i].DIEM_TRUNG_BINH);    
+        // printf("Hoc Luc: %s\n", Database[i].HOC_LUC);                             
    }
    
 }
