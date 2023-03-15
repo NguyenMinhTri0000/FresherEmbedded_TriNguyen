@@ -1,6 +1,5 @@
-//Them check gioi tính
-//Sửa hiển thị cho đẹp
-//Xóa màn hình
+//Tìm cách thay thế không dùng goto
+//Sap xep theo tên còn chút vấn đề
 #include <stdio.h>
 #include <stdint.h>
 #include <vector>
@@ -44,7 +43,7 @@ SinhVien::SinhVien(){
 class Menu{
     private:
         uint8_t Check(double diem, char* ten);
-        // uint8_t Check_Gioi_Tinh(char* gioi_tinh);
+        void Check_Gioi_Tinh(char* gioi_tinh);
         void NHAP_GIOI_TINH(char* gioi_tinh) ;
     public:
         Menu();
@@ -73,7 +72,7 @@ Menu::Menu(){
     printf("Nhan 5: Sap Xep Sinh Vien Theo GPA\n"); 
     printf("Nhan 6: Sap Xep Sinh Vien Theo Ten\n");       
     printf("Nhan 7: Hien Thi Danh Sach\n");   
-    printf("Nhan 8: De thoat chuong trinh\n");  //thực tế khác từ 1 đến 8 là được
+    printf("Nhan 8: De thoat chuong trinh\n");  
 
     scanf("%d", &phim);
 
@@ -82,35 +81,74 @@ Menu::Menu(){
     case 1:
         ThemSinhVien:
         ThemSinhVien();
-        printf("Nhan 1 Quay lai Menu: \n");
-        printf("Nhan 2 Tiep tuc them sinh vien: \n");        
+        printf("Nhan 1 Quay lai Menu \n");
+        printf("Nhan 2 Tiep tuc them sinh vien \n");        
+        printf("Nhan 3 De hien thi thong tin sinh vien\n");
         scanf("%d", &phim);
-        if (phim == 1)       goto menu;
-        else if (phim == 2)  goto ThemSinhVien;
-        break;
+        switch (phim)
+        {
+            case 1:
+                goto menu;
+                break;
+            case 2:
+                goto ThemSinhVien;
+                break;            
+            case 3:
+                goto HienThiDanhSach;
+                break;        
+            default:
+                break;
+        }
     case 2:
         CapNhatThongTin:
         CapNhatThongTin();
-        printf("Nhan 1 Quay lai Menu: \n");
-        printf("Nhan 2 Tiep tuc sửa thông tin sinh vien: \n");        
+        printf("Nhan 1 Quay lai Menu \n");
+        printf("Nhan 2 Tiep tuc sửa thông tin sinh vien \n");  
+        printf("Nhan 3 De hien thi thong tin sinh vien\n");              
         scanf("%d", &phim);
-        if (phim == 1)       goto menu;
-        else if (phim == 2)  goto CapNhatThongTin;
+        switch (phim)
+        {
+            case 1:
+                goto menu;
+                break;
+            case 2:
+                goto CapNhatThongTin;
+                break;            
+            case 3:
+                goto HienThiDanhSach;
+                break;        
+            default:
+                break;
+        }
         break;   
+        
     case 3:
         XoaSinhVien:
         XoaSinhVien();
-        printf("Nhan 1 Quay lai Menu: \n");
-        printf("Nhan 2 Tiep tuc xoa sinh vien: \n");        
+        printf("Nhan 1 Quay lai Menu \n");
+        printf("Nhan 2 Tiep tuc xoa sinh vien \n"); 
+        printf("Nhan 3 De hien thi thong tin sinh vien\n");               
         scanf("%d", &phim);
-        if (phim == 1)       goto menu;
-        else if (phim == 2)  goto XoaSinhVien;
+        switch (phim)
+        {
+            case 1:
+                goto menu;
+                break;
+            case 2:
+                goto XoaSinhVien;
+                break;            
+            case 3:
+                goto HienThiDanhSach;
+                break;        
+            default:
+                break;
+        }
         break;  
     case 4:
         TimTheoTen:
         TimTheoTen();   
-        printf("Nhan 1 Quay lai Menu: \n");
-        printf("Nhan 2 Tiep tuc tim sinh vien theo ten: \n");        
+        printf("Nhan 1 Quay lai Menu \n");
+        printf("Nhan 2 Tiep tuc tim sinh vien theo ten \n");                
         scanf("%d", &phim);
         if (phim == 1)       goto menu;
         else if (phim == 2)  goto TimTheoTen;
@@ -128,8 +166,11 @@ Menu::Menu(){
         goto menu;
         break;                           
     case 7:
-        HienThiDanhSach();
-        goto menu;        
+        HienThiDanhSach:
+        HienThiDanhSach();  
+        printf("Nhan 1 Quay lai Menu: ");
+        scanf("%d", &phim);
+        goto menu;            
         break;           
            
     default:  
@@ -144,14 +185,13 @@ uint8_t Menu::Check(double diem, char* ten)
         return 0;
     }
 }
-// uint8_t Menu::Check_Gioi_Tinh(char* gioi_tinh)
-// {
-//     if((strcmp("gioi_tinh", "Nam") == 0)||(strcmp("gioi_tinh", "Nu") == 0))   return 1;
-//     else{
-//         printf("Gioi tinh %s khong hop le: ", gioi_tinh);
-//         return 0;
-//     }
-// }
+void Menu::Check_Gioi_Tinh(char* gioi_tinh)
+{
+    while (strcmp(gioi_tinh, "nam") != 0 && strcmp(gioi_tinh, "nu") != 0) {
+        printf("Gioi tinh nhap vao khong hop le, moi nhap lai: ");
+        scanf("%s", gioi_tinh);
+    }    
+}
 
 // void Menu::NHAP_GIOI_TINH(char* gioi_tinh)  
 // {
@@ -170,7 +210,7 @@ void Menu::ThemSinhVien(){
     // NHAP_GIOI_TINH(sv.GIOI_TINH);
     printf("Gioi Tinh(Nam/Nu): ");
     scanf("%s", sv.GIOI_TINH);
-
+    Check_Gioi_Tinh(sv.GIOI_TINH);
     NHAP_DIEM("Toan", DIEM_TOAN)  ;
     NHAP_DIEM("Ly", DIEM_LY)  ;  
     NHAP_DIEM("Hoa", DIEM_HOA)  ;      
@@ -336,21 +376,12 @@ void Menu::SapXepTheoTen(){
 }
 void Menu::HienThiDanhSach(){
     // system("clear");
+    system("cls");
     printf("HIEN THI THONG TIN SINH VIEN\n"); 
-    printf("STT\tID\tTen\tGioi Tinh\t\tDiem Toan\tDiem Ly\t\tDiem Hoa\tDiem TB\t\tHoc luc\n");    
+    printf("STT\tID\tTen\tGioi Tinh\tDiem Toan\tDiem Ly\t\tDiem Hoa\tDiem TB\t\tHoc luc\n");    
    for (uint8_t i = 0; i < Database.size(); i++)
    {
-    printf("%d\t%d\t%s\t%-25s%.1f\t\t%.1f\t\t%.1f\t\t%.1f\t\t%s\n", i + 1, Database[i].ID, Database[i].TEN, Database[i].GIOI_TINH, Database[i].DIEM_TOAN, Database[i].DIEM_LY, Database[i].DIEM_HOA, Database[i].DIEM_TRUNG_BINH, Database[i].HOC_LUC);     
-        // printf("Sinh Vien %d:\n", i+1);
-        // printf("Ten Sinh Vien: %s\n", Database[i].TEN);
-        // // printf("Tuoi Sinh Vien: %hhd\n", Database[i].TUOI);        
-        // printf("Gioi Tinh: %s\n", Database[i].GIOI_TINH);
-
-        // printf("Diem Toan: %f\n", Database[i].DIEM_TOAN);
-        // printf("Diem Ly: %f\n", Database[i].DIEM_LY);
-        // printf("Diem Hoa: %f\n", Database[i].DIEM_HOA);    
-        // printf("Diem Trung Binh: %f\n", Database[i].DIEM_TRUNG_BINH);    
-        // printf("Hoc Luc: %s\n", Database[i].HOC_LUC);                             
+    printf("%d\t%d\t%s\t%s\t\t%.1f\t\t%.1f\t\t%.1f\t\t%.1f\t\t%s\n", i + 1, Database[i].ID, Database[i].TEN, Database[i].GIOI_TINH, Database[i].DIEM_TOAN, Database[i].DIEM_LY, Database[i].DIEM_HOA, Database[i].DIEM_TRUNG_BINH, Database[i].HOC_LUC);                               
    }
    
 }
