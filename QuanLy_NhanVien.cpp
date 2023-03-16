@@ -38,8 +38,8 @@ typedef struct
     vector<thong_tin_ban> Database_thong_tin_ban(9);        //9 bàn
     vector<so_luong_mon> Database_thong_tin_mon;        //9 bàn
 class Menu{
-    public:
-
+     public:
+        Menu();
 };
 
 class QuanLy{
@@ -61,6 +61,29 @@ class NhanVien{
         void GoiMon(uint8_t SoBan);
         void TinhTien(uint8_t SoBan);
 };
+// -------------------------MENU--------------------------------------
+Menu::Menu(){
+    int phim;
+    
+    printf("Nhan 1: Vao Che Do Quan Ly\n");
+    printf("Nhan 2: Vao Che Do Nhan Vien\n");
+    printf("Nhan 3: Thoat Chuong Trinh\n"); 
+    scanf("%d", &phim);    
+    switch (phim)
+    {
+    case 1:
+        QuanLy();
+        break;
+    case 2:
+        NhanVien();
+        break;    
+    case 3:
+        exit(0);
+        break;            
+    default:
+        break;
+    }
+}
 // -------------------CHẾ ĐỘ QUẢN LÝ--------------------------
 QuanLy::QuanLy(){
     QuanLy:
@@ -72,7 +95,7 @@ QuanLy::QuanLy(){
     printf("Nhan 2: Chinh Sua Mon\n");
     printf("Nhan 3: Xoa Mon\n"); 
     printf("Nhan 4: Hien Thi Danh Sach\n");            
-    printf("Nhan 5: Quay Lai Trang Chu\n");     
+    printf("Nhan 5: Quay Lai Trang Chu Menu\n");     
 
     scanf("%d", &phim);
 
@@ -137,7 +160,10 @@ QuanLy::QuanLy(){
         printf("Nhan 1: Quay Lai Trang Quan Ly\n");    
         scanf("%d", &phim);   
         if(phim)      goto QuanLy;      
-        break;                 
+        break;         
+    case 5:
+        Menu(); 
+        break;                  
     default:
         break;
     }
@@ -228,8 +254,6 @@ void QuanLy::HienThiDanhSach(){
 NhanVien::NhanVien(){
     printf("DAY LA CHE DO NHAN VIEN\n");
 
-
-
     for(uint8_t i =0; i<9; i++)
     {
         // Database_thong_tin_ban[i].TRANG_THAI = 0;
@@ -244,7 +268,8 @@ NhanVien::NhanVien(){
     printf("\n");
     //Chọn bàn
     int ban;
-    printf("Chon ban tu 1 den 9\n");
+    printf("Nhan 1-9 de chon ban 1-9\n");
+    printf("Nhan 0 de quay ve trang chu Menu");
     scanf("%d", &ban);
     for(uint8_t i = 1; i<10; i++)
     {
@@ -252,6 +277,10 @@ NhanVien::NhanVien(){
         {
             printf("DA CHON BAN SO %d\n", i);            
             ChonBan(i);
+        }
+        else
+        {         
+            Menu();
         }
     }
 }
@@ -278,8 +307,8 @@ void NhanVien::ChonBan(uint8_t SoBan)
         NhanVien();       
         break;  
     case 3:
-        NhanVien();        
-        break;                      
+        Menu(); 
+        break;                            
     default:
         break;
     }  
@@ -321,8 +350,7 @@ void NhanVien::TinhTien(uint8_t SoBan){
 
 int main(int argc, char const *argv[])
 {
-    QuanLy ql;
-    NhanVien nv;
-
+    Menu m;
+    // QuanLy qu;
     return 0;
 }
