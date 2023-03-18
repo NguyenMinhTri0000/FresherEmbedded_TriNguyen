@@ -1,6 +1,3 @@
-//còn thiếu phần thanh toán, gọi món
-//bàn đã gọi món rồi có thể gọi thêm món nữa, nhưng bàn tính tiền rồi thì không được tính tiền nữa, code thêm điều kiện cho nó
-//code cho gọn lại theo chuẩn
 #include <stdio.h>
 #include <stdint.h>
 #include <vector>
@@ -33,7 +30,7 @@ typedef struct
 
     vector<Thuc_don> Database_thuc_don;
     vector<thong_tin_ban> Database_thong_tin_ban(9);        //9 bàn
-    vector<so_luong_mon> Database_thong_tin_mon;        //9 bàn
+    // vector<so_luong_mon> Database_thong_tin_mon;    
 class Menu{
      public:
         Menu();
@@ -55,7 +52,7 @@ class NhanVien{
     private:
         void ChonBan(uint8_t SoBan); 
         void HienThiDanhSach();       
-        void HienThiHoaDon();          
+        void HienThiHoaDon(uint8_t SoBan);          
     public:
         NhanVien();
         void GoiMon(uint8_t SoBan);
@@ -299,15 +296,23 @@ void NhanVien::HienThiDanhSach(){
    }  
 }
 
-void NhanVien::HienThiHoaDon(){
+void NhanVien::HienThiHoaDon(uint8_t SoBan){
     // system("clear");
     system("cls");
-    printf("HIEN THI HOA DON\n"); 
+    printf("HIEN THI HOA DON BAN %d\n", SoBan); 
     printf("STT\tTen Mon\t\tGia\tSo Luong\n");    
-   for (uint8_t i = 0; i < Database_thong_tin_mon.size(); i++)
-   {    
-        printf("%d\t%s\t\t%u\t%d\n", i + 1 , Database_thong_tin_mon[i].TEN_MON, Database_thong_tin_mon[i].GIA, Database_thong_tin_mon[i].SO_LUONG);                               
-   }  
+
+    for(uint8_t j = 0; j <Database_thong_tin_ban.size(); j++)
+    {
+        if(j == SoBan - 1)
+        {
+            for (uint8_t i = 0; i < Database_thong_tin_ban[j].DATA_MON.size(); i++)
+            {    
+                    printf("%d\t%s\t\t%u\t%d\n", i + 1 , Database_thong_tin_ban[j].DATA_MON[i].TEN_MON, Database_thong_tin_ban[j].DATA_MON[i].GIA, Database_thong_tin_ban[j].DATA_MON[i].SO_LUONG);                               
+            } 
+        }
+    }
+
 }
 void NhanVien::ChonBan(uint8_t SoBan)
 {
@@ -375,29 +380,28 @@ void NhanVien::GoiMon(uint8_t SoBan){
     }
     if (!found)
     {
-        printf("Khong tim thay mon co ten la %d\n", Database_thong_tin_mon[SoBan - 1].TEN_MON);
+        printf("Khong tim thay mon co ten la %d\n", Database_thong_tin_ban[SoBan - 1].DATA_MON[SoBan - 1].TEN_MON);
     } 
     
     printf("Nhap vao so luong: \n");
     scanf("%d", &Sl_m.SO_LUONG);
 
-    Database_thong_tin_mon.push_back(Sl_m);
+    Database_thong_tin_ban[SoBan - 1].DATA_MON.push_back(Sl_m);
 
     Database_thong_tin_ban[SoBan-1].TRANG_THAI = 1; //gọi món xong chuyển sang dấu x
-    HienThiHoaDon();
+    HienThiHoaDon(SoBan);
 }
 void NhanVien::TinhTien(uint8_t SoBan){
-    printf("Tinh Tien ban so %d\n", SoBan);
-    HienThiHoaDon();
+    HienThiHoaDon(SoBan);
     printf("Tong Tien Ban %d La: ", SoBan);
     uint32_t TongTien = 0;
     for(uint8_t i = 0; i< Database_thong_tin_ban.size(); i++)
     {
         if(i == SoBan - 1)
         {
-            for(uint8_t j = 0; j< Database_thong_tin_mon.size(); j++)
+            for(uint8_t j = 0; j< Database_thong_tin_ban[SoBan - 1].DATA_MON.size(); j++)
             {
-                TongTien =  TongTien + Database_thong_tin_mon[j].GIA*Database_thong_tin_mon[j].SO_LUONG;
+                TongTien =  TongTien + Database_thong_tin_ban[SoBan - 1].DATA_MON[j].GIA*Database_thong_tin_ban[SoBan - 1].DATA_MON[j].SO_LUONG;
             }
         }
     }
@@ -409,15 +413,20 @@ void NhanVien::TinhTien(uint8_t SoBan){
     {
         if(i == SoBan - 1)
         {
-            for(uint8_t j = 0; j< Database_thong_tin_mon.size(); j++)
+            for (uint8_t i = 0; i < Database_thong_tin_ban.size(); i++)
             {
-                Database_thong_tin_mon[j].GIA = 0;
-                Database_thong_tin_mon[j].SO_LUONG = 0;
-                // Database_thong_tin_mon.erase(Database_thong_tin_mon.begin() + j);                
+                if (i == SoBan - 1)
+                {
+                    // while (Database_thong_tin_ban[i].DATA_MON.begin() != Database_thong_tin_ban[i].DATA_MON.end())
+                    // {
+                    //     Database_thong_tin_ban[i].DATA_MON.begin() = Database_thong_tin_ban[i].DATA_MON.erase(Database_thong_tin_ban[i].DATA_MON.begin());
+                    // }     
+                    Database_thong_tin_ban[i].DATA_MON.clear();
+                }
             }
+
         }
     } 
-
 }
 
 int main(int argc, char const *argv[])
