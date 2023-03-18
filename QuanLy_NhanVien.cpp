@@ -12,15 +12,13 @@ using namespace std;
 
 typedef struct 
 {
-    uint8_t STT;
     uint8_t ID;
     char    TEN_MON[30];
     uint16_t GIA; 
 }Thuc_don;
 
 typedef struct 
-{
-    // Thuc_don THONG_TIN_MON;
+{    
     char    TEN_MON[30];  
     uint16_t GIA;   
     uint8_t SO_LUONG;
@@ -28,7 +26,6 @@ typedef struct
 
 typedef struct 
 {
-    uint8_t SO_BAN;
     uint8_t TRANG_THAI;
     vector<so_luong_mon> DATA_MON;
 }thong_tin_ban;
@@ -45,6 +42,7 @@ class Menu{
 class QuanLy{
     private:
         uint8_t ID;
+        
     public:
         QuanLy();
         void ThemMon();
@@ -55,7 +53,9 @@ class QuanLy{
 
 class NhanVien{
     private:
-        void ChonBan(uint8_t SoBan);        
+        void ChonBan(uint8_t SoBan); 
+        void HienThiDanhSach();       
+        void HienThiHoaDon();          
     public:
         NhanVien();
         void GoiMon(uint8_t SoBan);
@@ -187,6 +187,7 @@ void QuanLy::ThemMon(){
 
 void QuanLy::SuaMon()
 {    
+    HienThiDanhSach();    
     uint8_t id;
     printf("SUA MON\n");
     printf("Nhap vao ID: ");
@@ -210,12 +211,14 @@ void QuanLy::SuaMon()
     }
     if (!found)
     {
-        printf("Khong tim thay sinh vien co ID la %d\n", id);
+        printf("Khong tim thay mon co ID la %d\n", id);
     }
+    HienThiDanhSach();    
 }
 
 void QuanLy::XoaMon()
 {
+    HienThiDanhSach();  
     uint8_t id;
     printf("XOA MON\n");
     printf("Nhap vao ID: ");
@@ -235,14 +238,15 @@ void QuanLy::XoaMon()
 
     if (!found)
     {
-        printf("Khong tim thay sinh vien co ID la %d\n", id);
+        printf("Khong tim thay mon co ID la %d\n", id);
     }
+    HienThiDanhSach();
 }
 
 void QuanLy::HienThiDanhSach(){
     // system("clear");
     system("cls");
-    printf("HIEN THI THONG TIN SINH VIEN\n"); 
+    printf("HIEN THI THONG TIN THUC DON\n"); 
     printf("STT\tID\tTen Mon\t\tGia\n");    
    for (uint8_t i = 0; i < Database_thuc_don.size(); i++)
    {    
@@ -278,16 +282,35 @@ NhanVien::NhanVien(){
             printf("DA CHON BAN SO %d\n", i);            
             ChonBan(i);
         }
-        else
-        {         
-            Menu();
-        }
+        // else
+        // {         
+        //     Menu();
+        // }
     }
 }
+void NhanVien::HienThiDanhSach(){
+    // system("clear");
+    system("cls");
+    printf("HIEN THI THONG TIN MON\n"); 
+    printf("STT\tID\tTen Mon\t\tGia\n");    
+   for (uint8_t i = 0; i < Database_thuc_don.size(); i++)
+   {    
+        printf("%d\t%d\t%s\t\t%u\n", i + 1 , Database_thuc_don[i].ID, Database_thuc_don[i].TEN_MON, Database_thuc_don[i].GIA);                               
+   }  
+}
 
+void NhanVien::HienThiHoaDon(){
+    // system("clear");
+    system("cls");
+    printf("HIEN THI HOA DON\n"); 
+    printf("STT\tTen Mon\t\tGia\tSo Luong\n");    
+   for (uint8_t i = 0; i < Database_thong_tin_mon.size(); i++)
+   {    
+        printf("%d\t%s\t\t%u\t%d\n", i + 1 , Database_thong_tin_mon[i].TEN_MON, Database_thong_tin_mon[i].GIA, Database_thong_tin_mon[i].SO_LUONG);                               
+   }  
+}
 void NhanVien::ChonBan(uint8_t SoBan)
 {
-
     int phim;
     ChonBan:    
     printf("Nhap chuong trinh ban muon\n");
@@ -299,15 +322,31 @@ void NhanVien::ChonBan(uint8_t SoBan)
     switch (phim)
     {
     case 1:
+        GoiMon:
         GoiMon(SoBan);
+        int key;
+            printf("Nhan 1: Tiep tuc goi mon\n");
+            printf("Nhan 2: Quay Lai trang Goi Mon Hoac Tinh Tien\n");  
+            scanf("%d", &key);
+        switch (key)
+        {
+        case 1:
+            goto GoiMon;
+            break;
+        case 2:
+            goto ChonBan;
+            break;        
+        default:
+            break;
+        }
         NhanVien();
         break;
     case 2:
-        TinhTien(SoBan);
+        TinhTien(SoBan);    
         NhanVien();       
         break;  
     case 3:
-        Menu(); 
+        NhanVien(); 
         break;                            
     default:
         break;
@@ -316,41 +355,76 @@ void NhanVien::ChonBan(uint8_t SoBan)
 
 void NhanVien::GoiMon(uint8_t SoBan){
     printf("Goi mon ban so %d\n", SoBan);
-    // so_luong_mon ttm = Database_thong_tin_mon[SoBan - 1];
-    // printf("Nhap vao ten mon: \n");
-    // scanf("%s", ttm.TEN_MON);
 
-    // bool found = false;
-    // for (uint8_t i = 0; i < Database_thuc_don.size(); i++)
-    // {
-    //     if (strcmp(Database_thuc_don[i].TEN_MON,ttm.TEN_MON)==0)
-    //     {
-    //         ttm.GIA = Database_thuc_don[i].GIA;
-    //         found = true;
-    //         break;
-    //     }
-    // }
-    // if (!found)
-    // {
-    //     printf("Khong tim thay mon co ten la %d\n", Database_thong_tin_mon[SoBan - 1].TEN_MON);
-    // } 
+    HienThiDanhSach();
+    int key;
+    so_luong_mon Sl_m ;
+    printf("Nhap vao ID mon: \n");
+    scanf("%d", &key);
+
+    bool found = false;
+    for (uint8_t i = 0; i < Database_thuc_don.size(); i++)
+    {
+        if (Database_thuc_don[i].ID == key)
+        {
+            Sl_m.GIA = Database_thuc_don[i].GIA;
+            strcpy(Sl_m.TEN_MON, Database_thuc_don[i].TEN_MON);
+            found = true;
+            break;
+        }
+    }
+    if (!found)
+    {
+        printf("Khong tim thay mon co ten la %d\n", Database_thong_tin_mon[SoBan - 1].TEN_MON);
+    } 
     
-    // printf("Nhap vao so luong: \n");
-    // scanf("%d", &(Database_thong_tin_mon[SoBan - 1].SO_LUONG));
+    printf("Nhap vao so luong: \n");
+    scanf("%d", &Sl_m.SO_LUONG);
 
-    // Database_thong_tin_mon[SoBan - 1] = ttm;
+    Database_thong_tin_mon.push_back(Sl_m);
 
     Database_thong_tin_ban[SoBan-1].TRANG_THAI = 1; //gọi món xong chuyển sang dấu x
+    HienThiHoaDon();
 }
 void NhanVien::TinhTien(uint8_t SoBan){
     printf("Tinh Tien ban so %d\n", SoBan);
+    HienThiHoaDon();
+    printf("Tong Tien Ban %d La: ", SoBan);
+    uint32_t TongTien = 0;
+    for(uint8_t i = 0; i< Database_thong_tin_ban.size(); i++)
+    {
+        if(i == SoBan - 1)
+        {
+            for(uint8_t j = 0; j< Database_thong_tin_mon.size(); j++)
+            {
+                TongTien =  TongTien + Database_thong_tin_mon[j].GIA*Database_thong_tin_mon[j].SO_LUONG;
+            }
+        }
+    }
+ 
+    printf("%u\n", TongTien);
+    Database_thong_tin_ban[SoBan-1].TRANG_THAI = 0; //tính tiền xong chuyển sang dấu -   
 
-    Database_thong_tin_ban[SoBan-1].TRANG_THAI = 0; //tính tiền xong chuyển sang dấu -    
+    for(uint8_t i = 0; i< Database_thong_tin_ban.size(); i++)
+    {
+        if(i == SoBan - 1)
+        {
+            for(uint8_t j = 0; j< Database_thong_tin_mon.size(); j++)
+            {
+                Database_thong_tin_mon[j].GIA = 0;
+                Database_thong_tin_mon[j].SO_LUONG = 0;
+                // Database_thong_tin_mon.erase(Database_thong_tin_mon.begin() + j);                
+            }
+        }
+    } 
+
 }
 
 int main(int argc, char const *argv[])
 {
     Menu m;
     // QuanLy qu;
+    // NhanVien nv;
+    // nv.GoiMon(4);
     return 0;
 }
