@@ -359,17 +359,20 @@ void Menu::SapXepTheoTen(){
     SinhVien temp;
     for (uint8_t i = 0; i < Database.size() - 1; i++) {       
         for (uint8_t j = i + 1; j < Database.size(); j++) {
-            for(uint8_t k = 0; k<20; k++)
+            uint8_t k = 0;
+            for(uint8_t m =0; m<20; m++)
             {
-                if (Database[i].TEN[k] > Database[j].TEN[k]) 
-                {
-                    temp = Database[i];
-                    Database[i] = Database[j];
-                    Database[j] = temp;
-                    // swap(Database[i], Database[j + 1]); 
-                    break;
-                }               
+               if(Database[i].TEN[k] == Database[j].TEN[k])  k++;         
             }
+
+            if (Database[i].TEN[k] > Database[j].TEN[k]) 
+            {             
+                temp = Database[i];
+                Database[i] = Database[j];
+                Database[j] = temp;
+            }    
+
+            k = 0;
         }
     }  
     HienThiDanhSach()   ;     
