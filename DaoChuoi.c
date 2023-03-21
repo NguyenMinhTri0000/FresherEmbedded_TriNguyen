@@ -2,8 +2,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-
-
 //Tính độ dài chuõi
 uint8_t SizeChuoi(char* str)
 {
@@ -54,6 +52,7 @@ char* Dao_Ca_Chuoi(char *str) {
     return new_str;
 }
 
+//Chương trình đảo từng chữ trong chuỗi
 char* Dao_Chuoi(char *str) {
     uint8_t  len = SizeChuoi(str);
     char* new_str = (char*) malloc((len + 1) * sizeof(char));
@@ -80,20 +79,63 @@ char* Dao_Chuoi(char *str) {
     new_str[len] = '\0'; // thêm ký tự kết thúc chuỗi
     return new_str;
 }
-
+//Chương trình hiển thị chuỗi
 void HienThiChuoi(char *str)
 {
     printf("%s\n",str);
+    // printf("\n");
+    // for (uint8_t i = 0; i < SizeChuoi(str); i++)
+    // {
+    //     printf("%c", str[i]);
+    // }   
 }
 
-
+//Chương trình hiển thị của chuỗi in hoa
+void InHoaCaChuoi(char *str)
+{
+    for (uint8_t i = 0; i < SizeChuoi(str); i++)
+    {
+                    if((str[i]>=97)&&(str[i]<=122))     //cái chữ đó viết thường/ viết hoa bỏ qua
+                    {
+                        printf("%c",str[i]-32);
+                    }
+                    else
+                    {
+                        printf("%c",str[i]);
+                    } 
+    }   
+    printf("\n") ;
+}
+//Chương trình in thường cả chuỗi
+void InThuongCaChuoi(char *str)
+{
+    for (uint8_t i = 0; i < SizeChuoi(str); i++)
+    {
+                    if((str[i]>=65)&&(str[i]<=90))     //cái chữ đó viết hoa/ viết thường bỏ qua
+                    {
+                        printf("%c",str[i]+32);
+                    }
+                    else
+                    {
+                        printf("%c",str[i]);
+                    } 
+    }    
+}
 int main() {
-    char my_string[] = "Families of newborn patients at a Nebraska hospital received special hand-knitted hats this weekend. February 14, 2023";    
+    // char my_string[] = "What's really interesting is that there have been activist and environmental groups talking about the willow project for weeks, even months, and none of it got any news, Fisher said.";    
+    char my_string[] = "Emissions in 2019 were about higher than they were in 2010 and  higher than they were in 1990, largely due to increases in fossil fuel production, industrial activities and methane emissions, the report, released Monday by the U.N Intergovernmental";
     char* new_str = Dao_Ca_Chuoi(my_string);  //thêm vào chuỗi một dấu cách ở cuối cùng
     char* chuoidao =    insertChar(new_str);    
     char* chuoidao1 =    Dao_Chuoi(chuoidao); 
-    HienThiChuoi(chuoidao1);
 
+    InThuongCaChuoi(chuoidao1);
+    printf("\n");
+    printf("\n");
+    InHoaCaChuoi(chuoidao1);
+    printf("\n");    
+    HienThiChuoi(chuoidao1);  
+
+   
 
     return 0;
 }
