@@ -73,7 +73,7 @@ void DienThoai::setGia(double gia)
 class QuanLyDienThoai{
     private:
         vector<DienThoai>danhSachDienThoai;
-        uint8_t kiemTraId(uint8_t l_id);
+        // uint8_t kiemTraId(uint8_t l_id);
     public:
         QuanLyDienThoai();
         void themDienThoai();
@@ -91,7 +91,7 @@ QuanLyDienThoai::QuanLyDienThoai()
         printf("2. Xoa Dien Thoai\n");
         printf("3. Sua Dien Thoai\n");
         printf("4. Hien Thi Dien Thoai\n");
-        scanf("%d", &choice);
+        scanf("%hhu", &choice);
         
         switch (choice)
         {
@@ -112,24 +112,24 @@ QuanLyDienThoai::QuanLyDienThoai()
             hienThiDanhSach();
             break;
         default:
-            printf("Your choice: %d", choice);
+            printf("Your choice: %hhu", choice);
             printf("Invalid input, please try again.\n");
             continue;
         }
     }    
 }
-uint8_t QuanLyDienThoai::kiemTraId(uint8_t l_id)
-{
-    for(uint8_t i = 0; i <  danhSachDienThoai.size(); i++)
-    {
-        if(l_id == danhSachDienThoai[i].getId())
-        {
-            return 1;
-        }
-    }
-    printf("Khong tim thay ID");    
-    return 0;
-}
+// uint8_t QuanLyDienThoai::kiemTraId(uint8_t l_id)
+// {
+//     for(uint8_t i = 0; i <  danhSachDienThoai.size(); i++)
+//     {
+//         if(l_id == danhSachDienThoai[i].getId())
+//         {
+//             return 1;
+//         }
+//     }
+//     printf("Khong tim thay ID");    
+//     return 0;
+// }
 
     void QuanLyDienThoai::themDienThoai()
     {
@@ -145,34 +145,41 @@ uint8_t QuanLyDienThoai::kiemTraId(uint8_t l_id)
             printf("Nhap Hang Dien Thoai: ");
             scanf("%s", l_hang);        
             printf("Nhap Gia: ");    
-            scanf("%u", &l_gia);
+            scanf("%lf", &l_gia);
             DienThoai dt(l_ten, l_hang, l_gia);
             danhSachDienThoai.push_back(dt);
             printf("Nhan 1 de them dt: ");
             printf("Nhan 2 de thoat: ");
-            scanf("%d", &key);
+            scanf("%hhu", &key);
         } while (key == 1);
     }
-
 void QuanLyDienThoai::xoaDienThoai()
 {
-    hienThiDanhSach();
-    char key;
+    if(danhSachDienThoai.empty())
+    {
+        printf("Danh sach dien thoai rong.\n");
+        return;
+    }
+
+    uint8_t key;
     do
     {
+        hienThiDanhSach();
         uint8_t inID;
-        printf("Enter phone ID: ");
-        scanf("%d", &inID);
+        printf("Nhap vao ID: ");
+        scanf("%u", &inID);
         for(uint8_t i = 0; i <  danhSachDienThoai.size(); i++)
         {     
-            if(kiemTraId(inID) == 1)
+            if(inID == danhSachDienThoai[i].getId())
             {
                 danhSachDienThoai.erase(danhSachDienThoai.begin() + i);
-                printf("Done delete");         
+                printf("Da xoa dien thoai co ID %u.\n", inID);
+                i--; // Giảm biến đếm i đi 1 sau khi xóa phần tử hiện tại.
+                break;
             }
         }
-        printf("nhan 1 de xoa tiep? ");
-        scanf("%d",&key);
+        printf("Nhan 1 de xoa tiep? ");
+        scanf("%hhu", &key);
     } while(key == 1);
 }
 
@@ -180,10 +187,9 @@ void QuanLyDienThoai::suaDienThoai()
 {
     hienThiDanhSach();
     uint8_t key;
-
     uint8_t inID;
-    printf("Enter phone ID: ");
-    scanf("%d", &inID);
+    printf("Nhap vao ID: ");
+    scanf("%u", &inID);
 
     do
     {
@@ -192,18 +198,15 @@ void QuanLyDienThoai::suaDienThoai()
 
             if(inID == danhSachDienThoai[i].getId())
             {
-                if(kiemTraId(inID) == 1)
-                {
                     printf("1. Edit name\n");
                     printf("2. Edit manufacturer\n");
                     printf("3. Edit price\n");
-                    scanf("%d", &key);
-                }
+                    scanf("%hhu", &key);
                     switch (key)
                     {
                         case 1:
                             char tempName[20];
-                            printf("Enter new name: ");
+                            printf("Ten moi: ");
                             scanf("%s", tempName);
                             danhSachDienThoai[i].setTenDienThoai(tempName);
                             break;
@@ -216,7 +219,7 @@ void QuanLyDienThoai::suaDienThoai()
                         case 3: 
                             double tempGia;
                             printf("Nhap gia: ");
-                            scanf("%f", &tempGia);
+                            scanf("%lf", &tempGia);
                             danhSachDienThoai[i].setGia(tempGia);
                             break;                                                   
                         default:
@@ -227,12 +230,13 @@ void QuanLyDienThoai::suaDienThoai()
         }
 
         printf("Nhan 1 de tiep tuc sua dien thoai");
-        scanf(" %c",&key);
+        scanf("%hhu",&key);
     } while(key == 1);
 }
 
 void QuanLyDienThoai::hienThiDanhSach()
 {
+    // system("cls");
     if(danhSachDienThoai.empty())
     {
         printf("Empty list.\n");
@@ -241,7 +245,7 @@ void QuanLyDienThoai::hienThiDanhSach()
     {
         for(uint8_t i = 0; i < danhSachDienThoai.size(); i++)
         {
-            printf("%d \t%s\t %s\t %d\n",danhSachDienThoai[i].getId(), danhSachDienThoai[i].getTenDienThoai(), danhSachDienThoai[i].getHangDienThoai(), danhSachDienThoai[i].getGia());
+            printf("%hhu \t%s\t %s\t %lf\n",danhSachDienThoai[i].getId(), danhSachDienThoai[i].getTenDienThoai(), danhSachDienThoai[i].getHangDienThoai(), danhSachDienThoai[i].getGia());
         }
     }
 }
