@@ -151,6 +151,7 @@ void ManageLibrary::addBook(){
 
 void ManageLibrary::bookBorrow(){
     uint8_t key;
+    uint8_t stop;
     do
     {           
         printInfor();   
@@ -168,20 +169,48 @@ void ManageLibrary::bookBorrow(){
         scanf("%s", l_bookName);
 
         for(uint8_t i = 0; i < BookList.size(); i++){
-            // for(uint8_t j = i + 1; j < BookList.size(); j++){
-                // if(strcmp(BookList[i].getBookName(), BookList[j].getBookName())==0){                    //trùng tên sách
-                //     printf("Enter the author's name\n");
-                //     scanf("%s", &l_authorName);  
-                //     if(strcmp(BookList[i].getAuthorName(), l_authorName)==0){   
-                //         //mượn thằng i   
-                //     }
-                //     else if(strcmp(BookList[i].getAuthorName(), l_authorName)==0){   
-                //         //mượn thằng j
-                //     }          
-                // }
-                // else 
-                if(strcmp(BookList[i].getBookName(), l_bookName)==0){
-                    printf("Enter the number of books to borrow\n");
+            if(strcmp(BookList[i].getBookName(), l_bookName)==0){
+                for(uint8_t j = i + 1; j < BookList.size(); j++){
+                   if(strcmp(BookList[i].getBookName(), BookList[j].getBookName())==0) {
+                    printf("Same book title\n");
+                    stop = 1;
+
+                    printf("Enter the author's name\n");
+                    scanf("%s", &l_authorName); 
+                    if(strcmp(BookList[i].getAuthorName(), l_authorName)==0){   
+                        printf("Enter the number of books to borrow: \n");
+                        scanf("%hu", &l_number);
+                        if(l_number < BookList[i].getNumberBook()){
+                            BookList[i].setNumberBook(BookList[i].getNumberBook() - l_number);     
+                            printf(" Lent finish\n");
+                            printInfor(); 
+                        }
+                        else{
+                            printf("Library has only %hd books named %s\n", BookList[i].getNumberBook(), l_bookName);
+                        }
+                        printInfor();   
+                    }
+                    else if(strcmp(BookList[j].getAuthorName(), l_authorName)==0){   
+                        printf("Enter the number of books to borrow");
+                        scanf("%hu", &l_number);
+                        if(l_number < BookList[j].getNumberBook()){
+                            BookList[j].setNumberBook(BookList[j].getNumberBook() - l_number);     
+                            printf(" Lent finish\n");
+                            printInfor(); 
+                        }
+                        else{
+                            printf("Library has only %hd books named %s\n", BookList[j].getNumberBook(), l_bookName);
+                        }
+                    }  
+                   }
+                }
+
+                if(stop == 1) {     //Dừng vòng for ngoài của i
+                    break;
+                }
+                else{               //stop =0 tức là không có sách trùng tên
+                    stop = 1;
+                    printf("Enter the number of books to borrow");
                     scanf("%hu", &l_number);
                     if(l_number < BookList[i].getNumberBook()){
                         BookList[i].setNumberBook(BookList[i].getNumberBook() - l_number);     //
@@ -191,12 +220,45 @@ void ManageLibrary::bookBorrow(){
                     else{
                         printf("Library has only %hd books named %s\n", BookList[i].getNumberBook(), l_bookName);
                     }
+                    break;
                 }
-                else{
-                    printf("Couldn't find a book named %s\n", l_bookName);                      
-                }
-            // }
+            }
+
         }
+        if(stop == 0){
+                    printf("Couldn't find a book named %s\n", l_bookName);  
+        } 
+
+        // for(uint8_t i = 0; i < BookList.size(); i++){
+        //     // for(uint8_t j = i + 1; j < BookList.size(); j++){
+        //         // if(strcmp(BookList[i].getBookName(), BookList[j].getBookName())==0){                    //trùng tên sách
+        //         //     printf("Enter the author's name\n");
+        //         //     scanf("%s", &l_authorName);  
+        //         //     if(strcmp(BookList[i].getAuthorName(), l_authorName)==0){   
+        //         //         //mượn thằng i   
+        //         //     }
+        //         //     else if(strcmp(BookList[i].getAuthorName(), l_authorName)==0){   
+        //         //         //mượn thằng j
+        //         //     }          
+        //         // }
+        //         // else 
+        //         if(strcmp(BookList[i].getBookName(), l_bookName)==0){
+        //             printf("Enter the number of books to borrow\n");
+        //             scanf("%hu", &l_number);
+        //             if(l_number < BookList[i].getNumberBook()){
+        //                 BookList[i].setNumberBook(BookList[i].getNumberBook() - l_number);     //
+        //                 printf(" Lent finish\n");
+        //                 printInfor(); 
+        //             }
+        //             else{
+        //                 printf("Library has only %hd books named %s\n", BookList[i].getNumberBook(), l_bookName);
+        //             }
+        //         }
+        //         else{
+        //             printf("Couldn't find a book named %s\n", l_bookName);                      
+        //         }
+        //     // }
+        // }
 
         printf("Press 1 to continue borrowing the book\n");
         printf("press 2 to exit");
@@ -269,6 +331,7 @@ void ManageLibrary::bookBack(){
         }        
 
         printf("Press 1 to continue returning the book\n");
+        printf("press 2 to exit");        
         scanf("%hhu", &key);        
     } while (key == 1);
 }
