@@ -180,7 +180,7 @@ void ManageLibrary::bookBorrow(){
                     if(strcmp(BookList[i].getAuthorName(), l_authorName)==0){   
                         printf("Enter the number of books to borrow: \n");
                         scanf("%hu", &l_number);
-                        if(l_number < BookList[i].getNumberBook()){
+                        if(l_number <= BookList[i].getNumberBook()){
                             BookList[i].setNumberBook(BookList[i].getNumberBook() - l_number);     
                             printf(" Lent finish\n");
                             printInfor(); 
@@ -193,7 +193,7 @@ void ManageLibrary::bookBorrow(){
                     else if(strcmp(BookList[j].getAuthorName(), l_authorName)==0){   
                         printf("Enter the number of books to borrow");
                         scanf("%hu", &l_number);
-                        if(l_number < BookList[j].getNumberBook()){
+                        if(l_number <= BookList[j].getNumberBook()){
                             BookList[j].setNumberBook(BookList[j].getNumberBook() - l_number);     
                             printf(" Lent finish\n");
                             printInfor(); 
@@ -212,7 +212,7 @@ void ManageLibrary::bookBorrow(){
                     stop = 1;
                     printf("Enter the number of books to borrow");
                     scanf("%hu", &l_number);
-                    if(l_number < BookList[i].getNumberBook()){
+                    if(l_number <= BookList[i].getNumberBook()){
                         BookList[i].setNumberBook(BookList[i].getNumberBook() - l_number);     //
                         printf(" Lent finish\n");
                         printInfor(); 
